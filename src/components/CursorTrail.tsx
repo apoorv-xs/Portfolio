@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Low-latency cursor trail using requestAnimationFrame and direct DOM updates.
 // Avoids React state per-move and alloc churn for smoother response.
@@ -32,6 +33,8 @@ function supportsReducedMotion() {
 }
 
 const CursorTrail = () => {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
   const dotsRef = useRef<HTMLDivElement[]>([]);
   const rafRef = useRef<number | null>(null);
   const targetRef = useRef({ x: 0, y: 0 });

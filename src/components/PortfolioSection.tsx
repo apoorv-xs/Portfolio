@@ -58,7 +58,7 @@ const PortfolioSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+  <div className="grid grid-cols-1 gap-8 mb-12 md:grid-cols-2 lg:grid-cols-3">
           {featured.map((project, index) => {
             // Create staggered animations based on grid position
             let initial, animate;
