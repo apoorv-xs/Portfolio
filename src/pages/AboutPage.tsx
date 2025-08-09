@@ -1,25 +1,12 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import profilePhoto from '@/assets/profile-photo.jpg';
 
 const AboutPage = () => {
-  const { toast } = useToast();
+  // Download handled via anchor link to /resume.pdf
 
-  const handleDownloadResume = () => {
-    toast({
-      title: "Download Resume",
-      description: "Resume download would start here.",
-    });
-  };
-
-  const handleContact = () => {
-    toast({
-      title: "Contact Info",
-      description: "Email: hello@designer.com",
-    });
-  };
+  // Removed secondary "Contact Me" CTA per request
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,18 +53,10 @@ const AboutPage = () => {
 
               {/* Call-to-Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6 fade-in-up-delay-2">
-                <Button
-                  onClick={handleDownloadResume}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-base font-medium rounded-lg transition-all duration-200 hover:scale-105"
-                >
-                  Download Resume
-                </Button>
-                <Button
-                  onClick={handleContact}
-                  variant="outline"
-                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 text-base font-medium rounded-lg transition-all duration-200 hover:scale-105"
-                >
-                  Contact Me
+                <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-base font-medium rounded-lg transition-all duration-200 hover:scale-105">
+                  <a href="/resume.pdf" download>
+                    Download Resume
+                  </a>
                 </Button>
               </div>
             </div>

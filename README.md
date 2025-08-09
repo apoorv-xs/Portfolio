@@ -1,95 +1,93 @@
-# Welcome to your Lovable project
+## Personal Portfolio (React + Vite + TypeScript)
 
-## Project info
+A fast, responsive personal portfolio built with React, Vite, TypeScript, Tailwind CSS, and shadcn/ui. It includes smooth routing, reusable UI components, and a simple data model for projects.
 
-**URL**: https://lovable.dev/projects/a0e62d7e-9df7-4aad-850a-f7255248044a
+## Tech stack
 
-## How can I edit this code?
+- React 18 + TypeScript
+- Vite 5 (dev server on http://127.0.0.1:8080)
+- Tailwind CSS + shadcn/ui (Radix primitives)
+- TanStack Query, React Router
 
-There are several ways of editing your application.
+## Quick start
 
-**Use Lovable**
+Prerequisites:
+- Node.js 18+ (Node 20 LTS recommended)
+- npm 9+
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a0e62d7e-9df7-4aad-850a-f7255248044a) and start prompting.
+Install and run:
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```powershell
+# from the project root
+npm ci ; npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Useful scripts:
+- npm run dev – start the dev server
+- npm run build – production build to dist/
+- npm run build:dev – development-optimized build
+- npm run preview – preview the production build locally
+- npm run lint – run ESLint
+- npm run typecheck – TypeScript project check
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project structure
 
-**Use GitHub Codespaces**
+- src/pages – top-level routes (Home, Portfolio, About, Skills, 404)
+- src/components – UI and section components (Navigation, Hero, Portfolio, Skills, Contact, Footer)
+- src/components/ui – shadcn/ui building blocks
+- src/data/projects.ts – source of portfolio projects
+- src/assets – images used by the site
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Routing uses BrowserRouter and is SPA-friendly. Azure Static Web Apps is configured for SPA fallback via staticwebapp.config.json.
 
-## What technologies are used for this project?
+## Editing content
 
-This project is built with:
+Projects
+- Update project cards in src/data/projects.ts (title, description, image)
+- Add images to src/assets and import them at the top of projects.ts
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Branding & Sections
+- Edit copy and layout in components within src/components and pages in src/pages
 
-## API: Manage Projects
+Styling
+- Tailwind classes are used throughout. Global styles live in src/index.css and src/App.css
 
-An Azure Functions API is included at `api/projects` to support dynamic project entries.
+Aliases
+- Import using @ from the project root, e.g. import Navigation from "@/components/Navigation"
 
-- GET `/api/projects` returns `{ projects: ProjectItem[] }`.
-- POST `/api/projects` accepts JSON `{ title, description, image }` and requires an `x-api-key` header.
+## Build
 
-Security notes:
-
-- Set a strong API key as `API_KEY` in your deployment environment (e.g., Azure Static Web Apps secrets).
-- The sample implementation stores data in memory. Replace with a persistent data store for production.
-
-Example POST (PowerShell):
-
+```powershell
+npm run build ; npm run preview
 ```
-Invoke-RestMethod -Method Post -Uri "https://<your-app>.azurestaticapps.net/api/projects" -Headers @{"x-api-key"="<your key>"} -ContentType 'application/json' -Body '{"title":"New","description":"Desc","image":"/assets/new.jpg"}'
-```
+Output is generated to dist/.
 
-Local dev fallback:
+## Deployment (Azure Static Web Apps)
 
-- The frontend uses a hook that fetches `/api/projects` but falls back to static data in `src/data/projects.ts` if the API is unavailable.
+This repo includes a GitHub Actions workflow at .github/workflows/azure-static-web-apps.yml.
 
-## How can I deploy this project?
+What it does
+- Installs Node 20, runs npm ci and npm run build
+- Uploads dist/ to Azure Static Web Apps
 
-Simply open [Lovable](https://lovable.dev/projects/a0e62d7e-9df7-4aad-850a-f7255248044a) and click on Share -> Publish.
+To enable
+1) Create an Azure Static Web App and link this GitHub repo
+2) Add the secret AZURE_STATIC_WEB_APPS_API_TOKEN in the repo (Settings → Secrets and variables → Actions)
+3) Push to main; the workflow will build and deploy
 
-## Can I connect a custom domain to my Lovable project?
+Static site config
+- SPA fallback and security headers are defined in staticwebapp.config.json
 
-Yes, you can!
+## Troubleshooting
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- Port in use: The dev server runs on 8080. Change vite.config.ts if needed
+- Node/esbuild issues: Use Node 18/20. esbuild is pinned via package.json overrides
+- Windows PowerShell: Separate chained commands with ; (as shown above)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Acknowledgements
+
+- shadcn/ui, Radix UI, Tailwind CSS, TanStack Query, Vite
+
+## License
+
+Add a license file for your preferred license (e.g., MIT) if you plan to distribute this code.

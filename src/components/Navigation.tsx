@@ -28,7 +28,25 @@ const Navigation = () => {
     } else if (item === "Skills") {
       navigate("/skills");
     } else if (item === "Contact") {
-      scrollToSection("Contact");
+      const goScroll = () => {
+        // Prefer scrolling to footer; fallback to #contact section if present
+        const footer = document.getElementById("footer");
+        if (footer) {
+          footer.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+        const contact = document.getElementById("contact");
+        if (contact) {
+          contact.scrollIntoView({ behavior: "smooth" });
+        }
+      };
+      if (location.pathname !== "/") {
+        navigate("/");
+        // Wait for route change and DOM paint
+        setTimeout(goScroll, 50);
+      } else {
+        goScroll();
+      }
     }
   };
 

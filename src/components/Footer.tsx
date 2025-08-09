@@ -6,7 +6,7 @@ const Footer = () => {
   const GITHUB = env.VITE_GITHUB_URL || "https://github.com/apoorv-xs";
 
   return (
-    <footer className="py-10 px-4 sm:px-6 lg:px-8 border-t border-border bg-background/60">
+    <footer id="footer" className="py-10 px-4 sm:px-6 lg:px-8 border-t border-border bg-background/60">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-5">
         <nav aria-label="social links" className="flex flex-wrap items-center justify-center gap-3">
           <a
