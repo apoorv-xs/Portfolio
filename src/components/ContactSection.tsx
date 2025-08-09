@@ -11,7 +11,7 @@ const ContactSection = () => {
     <section id="contact" className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
       <div className="max-w-4xl mx-auto text-center">
         <motion.h2 
-          className="text-3xl sm:text-4xl font-bold text-foreground mb-6"
+          className="text-3xl sm:text-4xl font-bold text-foreground mb-6 tracking-tight font-bodyCondensed"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ amount: 0.3 }}
@@ -20,7 +20,7 @@ const ContactSection = () => {
           Let's Connect
         </motion.h2>
         <motion.p 
-          className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto"
+          className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto font-bodyCondensed tracking-wide"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ amount: 0.3 }}
@@ -37,7 +37,7 @@ const ContactSection = () => {
           <Button
             onClick={handleContactClick}
             size="lg"
-            className="bg-hero-accent hover:bg-hero-accent/90 text-hero-accent-foreground px-8 py-3 text-base font-medium"
+            className="bg-hero-accent hover:bg-hero-accent/90 text-hero-accent-foreground px-8 py-3 text-base font-medium font-bodyCondensed tracking-wide"
           >
             Contact Me
           </Button>

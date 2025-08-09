@@ -15,7 +15,7 @@ const AboutPage = () => {
       {/* About Me Section */}
       <section className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground text-center mb-12 fade-in-up">
+          <h1 className="text-5xl md:text-6xl font-heading font-black text-foreground text-center mb-12 fade-in-up tracking-tight">
             About Me
           </h1>
           
@@ -32,20 +32,20 @@ const AboutPage = () => {
             </div>
 
             <div className="space-y-6 fade-in-up-delay-1 lg:col-span-2">
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed font-bodyCondensed">
                 I'm Apoorv, a passionate UI/UX Designer and Full-Stack Developer focused on creating 
                 intuitive, beautiful, and functional digital experiences. I bridge the gap between 
                 aesthetics and functionality, ensuring every project delivers both visual appeal and 
                 seamless user interaction.
               </p>
               
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed font-bodyCondensed">
                 My journey in design encompasses the entire process - from user research and wireframing 
                 to prototyping and visual design. My full-stack expertise allows me to understand technical 
                 feasibility, working across front-end interfaces to back-end logic and database management.
               </p>
               
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed font-bodyCondensed">
                 I'm driven by the challenge of solving complex problems and delivering high-quality solutions. 
                 Whether it's crafting seamless user flow, designing a pixel-perfect interface, or optimizing 
                 database queries, I'm committed to excellence. Let's build something amazing together!

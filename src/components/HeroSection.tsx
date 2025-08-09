@@ -51,7 +51,7 @@ const HeroSection = () => {
           {/* Mobile: Text content comes second */}
           <div className="space-y-8 hero-slide-left lg:pl-8 order-2 lg:order-1">
             <div className="space-y-6 hero-content-delay-1">
-              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-heading font-black leading-tight tracking-tight">
                 <span className="inline-block relative mr-4 group cursor-pointer transition-transform duration-300 hover:scale-105">
                   <span className="inline-block transition-all duration-1000 group-hover:text-primary">
                     H
@@ -97,10 +97,10 @@ const HeroSection = () => {
               </h1>
               
               <div className="space-y-4">
-                <h2 className="text-xl lg:text-2xl xl:text-3xl font-semibold text-muted-foreground whitespace-nowrap cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105">
+                <h2 className="text-xl lg:text-2xl xl:text-3xl font-semibold text-muted-foreground whitespace-nowrap cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 font-bodyCondensed">
                   UI/UX Designer & Full-Stack Developer
                 </h2>
-                <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl cursor-pointer transition-all duration-300 hover:text-gray-300 hover:scale-[1.02]">
+                <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl cursor-pointer transition-all duration-300 hover:text-gray-300 hover:scale-[1.02] font-bodyCondensed">
                   Crafting digital experiences that blend beautiful design with powerful functionality. 
                   From concept to deployment, I build solutions that make a difference.
                 </p>

@@ -4,7 +4,23 @@ import { useEffect, useMemo, useRef } from "react";
 // Avoids React state per-move and alloc churn for smoother response.
 
 const DOTS = 14; // number of dots in the trail
-const LERP = 0.28; // 0..1, higher = snappier
+const STICKY_LEAD = true; // make the first dot stick to the cursor
+const LERP_LEAD = 0.5; // used if STICKY_LEAD=false
+const LERP_TAIL = 0.38; // trailing dots follow speed (higher = closer)
+
+// Fun effects (kept lightweight and GPU-friendly)
+const ENABLE_HUE_SHIFT = true; // cycle colors along the trail
+const HUE_SPEED = 0.06; // hue degrees per ms (scaled down inside loop)
+const HUE_PER_DOT = 12; // hue offset per dot index
+
+const ENABLE_TWINKLE = true; // subtle opacity shimmer
+const TWINKLE_SPEED = 0.004; // radians per ms
+const TWINKLE_AMPLITUDE = 0.22; // max additional opacity
+
+const ENABLE_COMET = true; // stretch and rotate dots along motion
+const COMET_STRENGTH = 0.015; // scale factor from speed
+const COMET_MAX_SCALE_X = 1.35; // cap for horizontal stretch
+const COMET_MIN_SCALE_Y = 0.85; // cap for vertical compression
 
 function supportsReducedMotion() {
   if (typeof window === "undefined" || typeof window.matchMedia === "undefined") return false;
@@ -48,16 +64,22 @@ const CursorTrail = () => {
     window.addEventListener("pointermove", onPointerMove, { passive: true });
 
     const step = () => {
+      const now = performance.now();
       const pts = pointsRef.current;
       const target = targetRef.current;
 
-      // Lead dot chases the pointer
-      pts[0].x += (target.x - pts[0].x) * LERP;
-      pts[0].y += (target.y - pts[0].y) * LERP;
+      // Lead dot follows cursor immediately (or fast if disabled)
+      if (STICKY_LEAD) {
+        pts[0].x = target.x;
+        pts[0].y = target.y;
+      } else {
+        pts[0].x += (target.x - pts[0].x) * LERP_LEAD;
+        pts[0].y += (target.y - pts[0].y) * LERP_LEAD;
+      }
       // Each subsequent dot follows the previous
       for (let i = 1; i < pts.length; i++) {
-        pts[i].x += (pts[i - 1].x - pts[i].x) * LERP;
-        pts[i].y += (pts[i - 1].y - pts[i].y) * LERP;
+        pts[i].x += (pts[i - 1].x - pts[i].x) * LERP_TAIL;
+        pts[i].y += (pts[i - 1].y - pts[i].y) * LERP_TAIL;
       }
 
       // Apply transforms directly to DOM
@@ -66,7 +88,36 @@ const CursorTrail = () => {
         const el = els[i];
         if (!el) continue;
         const p = pts[i];
-        el.style.transform = `translate3d(${p.x - sizes[i] / 2}px, ${p.y - sizes[i] / 2}px, 0)`;
+        // Direction and speed approx using previous dot to create comet effect
+        let angle = 0;
+        let scaleX = 1;
+        let scaleY = 1;
+        if (ENABLE_COMET && i > 0) {
+          const dx = pts[i - 1].x - p.x;
+          const dy = pts[i - 1].y - p.y;
+          const speed = Math.hypot(dx, dy);
+          angle = Math.atan2(dy, dx) * (180 / Math.PI);
+          const stretch = Math.min(COMET_MAX_SCALE_X - 1, speed * COMET_STRENGTH);
+          scaleX = 1 + stretch;
+          scaleY = Math.max(COMET_MIN_SCALE_Y, 1 - stretch * 0.6);
+        }
+
+        el.style.transform = `translate3d(${p.x - sizes[i] / 2}px, ${p.y - sizes[i] / 2}px, 0) rotate(${angle}deg) scale(${scaleX}, ${scaleY})`;
+
+        if (ENABLE_HUE_SHIFT) {
+          const hue = (now * HUE_SPEED + i * HUE_PER_DOT) % 360;
+          // base alpha falls off along trail
+          const baseAlpha = Math.max(0.15, 1 - i / DOTS);
+          const twinkle = ENABLE_TWINKLE ? (Math.sin(now * TWINKLE_SPEED + i) * 0.5 + 0.5) * TWINKLE_AMPLITUDE : 0;
+          const alpha = Math.min(0.9, Math.max(0.05, baseAlpha + twinkle));
+          el.style.background = `hsla(${hue}, 90%, 60%, ${alpha})`;
+          if (i === 0) {
+            // Soft glow for the lead dot
+            el.style.boxShadow = `0 0 16px hsla(${hue}, 90%, 60%, ${Math.min(0.65, alpha)})`;
+          } else if (el.style.boxShadow) {
+            el.style.boxShadow = "";
+          }
+        }
       }
 
       rafRef.current = requestAnimationFrame(step);

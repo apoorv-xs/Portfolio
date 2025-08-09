@@ -5,6 +5,7 @@ export interface ProjectItem {
   title: string;
   description: string;
   image: string;
+  url?: string;
 }
 
 export function useProjects() {

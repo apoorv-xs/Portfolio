@@ -1,14 +1,18 @@
+import { sanitizeExternalUrl } from "@/lib/security";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import { useProjects } from "@/hooks/use-projects";
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const PortfolioSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { amount: 0.3 });
   const [scrollDirection, setScrollDirection] = useState("down");
   const [lastScrollY, setLastScrollY] = useState(0);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,15 +34,14 @@ const PortfolioSection = () => {
   // Featured should always reflect the first three portfolio items
   const featured = allProjects.slice(0, 3);
 
-  const handleViewProject = (projectTitle: string) => {
-    // In a real app, this would navigate to the project detail page
-    console.log(`Viewing project: ${projectTitle}`);
+  const handleViewProject = (projectUrl?: string) => {
+    const safe = sanitizeExternalUrl(projectUrl);
+    if (safe) {
+      window.open(safe, "_blank", "noopener,noreferrer");
+    }
   };
 
-  const handleViewAllProjects = () => {
-    // In a real app, this would navigate to a full portfolio page
-    console.log("Viewing all projects");
-  };
+  // Navigation handled via Link below for instant client-side routing
 
   return (
     <section ref={ref} id="portfolio" className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
@@ -48,9 +51,9 @@ const PortfolioSection = () => {
           initial={{ opacity: 0, y: scrollDirection === "down" ? -40 : 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ amount: 0.3 }}
-          transition={{ duration: 1.0, ease: [0.12, 0, 0.39, 0] }}
+          transition={{ duration: reduce ? 0.3 : 1.0, ease: [0.12, 0, 0.39, 0] }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4 tracking-tight font-bodyCondensed">
             Featured Projects
           </h2>
         </motion.div>
@@ -60,14 +63,14 @@ const PortfolioSection = () => {
             // Create staggered animations based on grid position
             let initial, animate;
             if (index === 0) {
-              initial = { opacity: 0, x: -60 };
-              animate = { opacity: 1, x: 0 };
+              initial = reduce ? { opacity: 0 } : { opacity: 0, x: -60 };
+              animate = reduce ? { opacity: 1 } : { opacity: 1, x: 0 };
             } else if (index === 1) {
-              initial = { opacity: 0, y: scrollDirection === "down" ? -60 : 60 };
-              animate = { opacity: 1, y: 0 };
+              initial = reduce ? { opacity: 0 } : { opacity: 0, y: scrollDirection === "down" ? -60 : 60 };
+              animate = reduce ? { opacity: 1 } : { opacity: 1, y: 0 };
             } else {
-              initial = { opacity: 0, x: 60 };
-              animate = { opacity: 1, x: 0 };
+              initial = reduce ? { opacity: 0 } : { opacity: 0, x: 60 };
+              animate = reduce ? { opacity: 1 } : { opacity: 1, x: 0 };
             }
             return (
               <motion.div
@@ -75,13 +78,14 @@ const PortfolioSection = () => {
                 initial={initial}
                 whileInView={animate}
                 viewport={{ amount: 0.3 }}
-                transition={{ duration: 1.0, ease: [0.12, 0, 0.39, 0] }}
+                transition={{ duration: reduce ? 0.3 : 1.0, ease: [0.12, 0, 0.39, 0] }}
               >
                 <ProjectCard
                   title={project.title}
                   description={project.description}
                   image={project.image}
-                  onViewProject={() => handleViewProject(project.title)}
+                  url={project.url}
+                  onViewProject={() => handleViewProject(project.url)}
                 />
               </motion.div>
             );
@@ -89,13 +93,14 @@ const PortfolioSection = () => {
         </div>
 
         <div className="text-center">
-          <Button
-            variant="outline"
-            onClick={handleViewAllProjects}
-            className="text-primary border-primary hover:bg-primary hover:text-primary-foreground px-8"
-          >
-            View All Projects
-          </Button>
+          <Link to="/portfolio">
+            <Button
+              variant="outline"
+              className="text-primary border-primary hover:bg-primary hover:text-primary-foreground px-8"
+            >
+              View All Projects
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

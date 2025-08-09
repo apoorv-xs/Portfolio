@@ -1,3 +1,4 @@
+import { sanitizeExternalUrl } from "@/lib/security";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -7,6 +8,7 @@ interface PortfolioCardProps {
   image: string;
   delay?: number;
   onViewProject?: () => void;
+  url?: string;
 }
 
 const PortfolioCard = ({
@@ -15,6 +17,7 @@ const PortfolioCard = ({
   image,
   delay = 0,
   onViewProject,
+  url,
 }: PortfolioCardProps) => {
   return (
     <motion.div
@@ -49,19 +52,30 @@ const PortfolioCard = ({
 
       {/* Text Content */}
       <div className="p-6">
-        <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-150">
+  <h3 className="text-xl font-heading font-extrabold text-foreground mb-3 tracking-tight group-hover:text-primary transition-colors duration-150">
           {title}
         </h3>
-        <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+  <p className="text-muted-foreground text-sm leading-relaxed mb-6 font-bodyCondensed">
           {description}
         </p>
-        <Button
-          variant="outline"
-          onClick={onViewProject}
-          className="w-full transition-transform duration-150 hover:scale-[1.02] hover:bg-primary hover:text-primary-foreground hover:border-primary"
-        >
-          View Project
-        </Button>
+  {url && sanitizeExternalUrl(url) ? (
+          <a
+      href={sanitizeExternalUrl(url)}
+            target="_blank"
+            rel="noopener noreferrer"
+      className="w-full inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground font-bodyCondensed tracking-wide"
+          >
+            View Project
+          </a>
+        ) : (
+          <Button
+            variant="outline"
+            onClick={onViewProject}
+            className="w-full transition-transform duration-150 hover:scale-[1.02] hover:bg-primary hover:text-primary-foreground hover:border-primary"
+          >
+            View Project
+          </Button>
+        )}
       </div>
     </motion.div>
   );

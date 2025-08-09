@@ -22,11 +22,11 @@ const Navigation = () => {
   const handleNavClick = (item: string) => {
     setActiveItem(item);
     if (item === "Portfolio") {
-      navigate("/portfolio");
+  navigate("/portfolio", { state: { skipScrollTop: false } });
     } else if (item === "About") {
-      navigate("/about");
+  navigate("/about", { state: { skipScrollTop: false } });
     } else if (item === "Skills") {
-      navigate("/skills");
+  navigate("/skills", { state: { skipScrollTop: false } });
     } else if (item === "Contact") {
       const goScroll = () => {
         // Prefer scrolling to footer; fallback to #contact section if present
@@ -41,7 +41,7 @@ const Navigation = () => {
         }
       };
       if (location.pathname !== "/") {
-        navigate("/");
+        navigate("/", { state: { skipScrollTop: true } });
         // Wait for route change and DOM paint
         setTimeout(goScroll, 50);
       } else {
@@ -63,7 +63,7 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="font-semibold text-lg text-foreground hover:text-primary transition-colors">
+          <Link to="/" className="font-semibold text-lg text-foreground hover:text-primary transition-colors font-bodyCondensed tracking-wide">
             HOME
           </Link>
 
@@ -72,7 +72,7 @@ const Navigation = () => {
             {navItems.map((item) => (
               <button
                 key={item}
-                className={`transition-colors duration-200 ${
+                className={`transition-colors duration-200 font-bodyCondensed tracking-wide ${
                   getActiveItem() === item 
                     ? "text-foreground" 
                     : "text-muted-foreground hover:text-foreground"
@@ -103,7 +103,7 @@ const Navigation = () => {
               {navItems.map((item) => (
                 <button
                   key={item}
-                  className={`transition-colors duration-200 text-left ${
+                  className={`transition-colors duration-200 text-left font-bodyCondensed tracking-wide ${
                     getActiveItem() === item 
                       ? "text-foreground" 
                       : "text-muted-foreground hover:text-foreground"
