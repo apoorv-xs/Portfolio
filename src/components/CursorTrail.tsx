@@ -34,7 +34,6 @@ function supportsReducedMotion() {
 
 const CursorTrail = () => {
   const isMobile = useIsMobile();
-  if (isMobile) return null;
   const dotsRef = useRef<HTMLDivElement[]>([]);
   const rafRef = useRef<number | null>(null);
   const targetRef = useRef({ x: 0, y: 0 });
@@ -49,7 +48,7 @@ const CursorTrail = () => {
   }, []);
 
   useEffect(() => {
-    if (supportsReducedMotion()) return; // Respect reduced motion
+    if (isMobile || supportsReducedMotion()) return; // Respect reduced motion and skip on mobile
     isMountedRef.current = true;
 
     // Initialize positions at center to avoid jump on first frame
@@ -143,9 +142,9 @@ const CursorTrail = () => {
       document.removeEventListener("visibilitychange", onVisibility);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [sizes]);
+  }, [sizes, isMobile]);
 
-  if (supportsReducedMotion()) return null;
+  if (isMobile || supportsReducedMotion()) return null;
 
   return (
     <>
