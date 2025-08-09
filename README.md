@@ -2,6 +2,8 @@
 
 A fast, responsive personal portfolio built with React, Vite, TypeScript, Tailwind CSS, and shadcn/ui. It includes smooth routing, reusable UI components, and a simple data model for projects.
 
+[![Azure Static Web Apps CI/CD](https://github.com/apoorv-xs/Portfolio/actions/workflows/azure-static-web-apps.yml/badge.svg)](../../actions/workflows/azure-static-web-apps.yml)
+
 ## Tech stack
 
 - React 18 + TypeScript
