@@ -5,14 +5,13 @@ import ProjectCard from "./ProjectCard";
 import { useProjects } from "@/hooks/use-projects";
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const PortfolioSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { amount: 0.3 });
   const [scrollDirection, setScrollDirection] = useState("down");
   const [lastScrollY, setLastScrollY] = useState(0);
-  const reduce = useReducedMotion();
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,26 +50,27 @@ const PortfolioSection = () => {
           initial={{ opacity: 0, y: scrollDirection === "down" ? -40 : 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ amount: 0.3 }}
-          transition={{ duration: reduce ? 0.3 : 1.0, ease: [0.12, 0, 0.39, 0] }}
+          transition={{ duration: 1.0, ease: [0.12, 0, 0.39, 0] }}
         >
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4 tracking-tight font-bodyCondensed">
             Featured Projects
           </h2>
         </motion.div>
 
-  <div className="grid grid-cols-1 gap-8 mb-12 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {featured.map((project, index) => {
             // Create staggered animations based on grid position
-            let initial, animate;
+            let initial: { opacity: number; x?: number; y?: number },
+              animate: { opacity: number; x?: number; y?: number };
             if (index === 0) {
-              initial = reduce ? { opacity: 0 } : { opacity: 0, x: -60 };
-              animate = reduce ? { opacity: 1 } : { opacity: 1, x: 0 };
+              initial = { opacity: 0, x: -60 };
+              animate = { opacity: 1, x: 0 };
             } else if (index === 1) {
-              initial = reduce ? { opacity: 0 } : { opacity: 0, y: scrollDirection === "down" ? -60 : 60 };
-              animate = reduce ? { opacity: 1 } : { opacity: 1, y: 0 };
+              initial = { opacity: 0, y: scrollDirection === "down" ? -60 : 60 };
+              animate = { opacity: 1, y: 0 };
             } else {
-              initial = reduce ? { opacity: 0 } : { opacity: 0, x: 60 };
-              animate = reduce ? { opacity: 1 } : { opacity: 1, x: 0 };
+              initial = { opacity: 0, x: 60 };
+              animate = { opacity: 1, x: 0 };
             }
             return (
               <motion.div
@@ -78,7 +78,7 @@ const PortfolioSection = () => {
                 initial={initial}
                 whileInView={animate}
                 viewport={{ amount: 0.3 }}
-                transition={{ duration: reduce ? 0.3 : 1.0, ease: [0.12, 0, 0.39, 0] }}
+                transition={{ duration: 1.0, ease: [0.12, 0, 0.39, 0] }}
               >
                 <ProjectCard
                   title={project.title}
